@@ -1,0 +1,55 @@
+{# templates/main/user_profile.html #}
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <!-- 左侧：用户信息卡片 -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                {# 你可以为用户添加一个头像字段，这里先用占位符 #}
+                <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="用户头像" width="150" height="150">
+                <h3 class="card-title">{{ user.name }}</h3>
+                <p class="text-muted">@{{ user.username }}</p>
+                <hr>
+                <p class="card-text text-start">
+                    <strong>邮箱:</strong> {{ user.email }}<br>
+                    <strong>电话:</strong> {{ user.tel if user.tel else '未提供' }}
+                </p>
+                <p class="card-text text-start bg-light p-3 rounded">
+                    <small>{{ user.note if user.note else '这位用户很神秘，什么也没留下...' }}</small>
+                </p>
+                {# ==================== 新增的编辑按钮 ==================== #}
+                {% if current_user.is_authenticated and current_user.id == user.id %}
+                <hr>
+                <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-info">编辑个人资料</a>
+                {% endif %}
+                {# ======================================================== #}
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧：用户发布的文章列表 -->
+    <div class="col-md-8">
+        <h4>{{ user.username }} 发布的文章 ({{ posts|length }}篇)</h4>
+        <hr>
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{{ url_for('blog.post_detail', post_id=post.id) }}" class="text-decoration-none text-dark">{{ post.title }}</a></h5>
+                        <p class="card-text text-muted small">
+                            发布于: {{ post.create_time.strftime('%Y年%m月%d日') }} | {{ post.likes }} 个赞
+                        </p>
+                        <p class="card-text">{{ post.summary }}...</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>这位用户还没有发布任何文章。</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

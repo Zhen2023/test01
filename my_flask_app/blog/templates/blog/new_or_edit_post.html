@@ -1,0 +1,57 @@
+{# templates/blog/new_or_edit_post.html #}
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">{{ legend }}</h2>
+                
+                {% if post_id %}
+                    <form method="POST" action="{{ url_for('blog.edit_post', post_id=post_id) }}" novalidate>
+                {% else %}
+                    <form method="POST" action="{{ url_for('blog.new_post') }}" novalidate>
+                {% endif %}
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label") }}
+                        {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="给你的文章起个名字吧") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.title.errors %}<span>{{ error }}</span>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.content.label(class="form-label") }}
+                        {{ form.content(class="form-control" + (" is-invalid" if form.content.errors else ""), rows=10, placeholder="在这里尽情创作吧...") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.content.errors %}<span>{{ error }}</span>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.tags_string.label(class="form-label") }}
+                        {{ form.tags_string(class="form-control" + (" is-invalid" if form.tags_string.errors else ""), placeholder="例如: Python, Flask, 学习笔记") }}
+                        <div class="form-text">多个标签请用英文逗号 "," 隔开。</div>
+                        <div class="invalid-feedback">
+                            {% for error in form.tags_string.errors %}<span>{{ error }}</span>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        {% if post_id %}
+                            {{ form.submit(value="更新文章", class="btn btn-primary btn-lg") }}
+                        {% else %}
+                            {{ form.submit(value="发布文章", class="btn btn-primary btn-lg") }}
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

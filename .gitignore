@@ -1,0 +1,23 @@
+# 虚拟环境
+venv/
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# Flask 环境变量文件
+.flaskenv
+
+# SQLite 数据库
+*.db
+site.db
+
+# IDE/编辑器特定文件
+.vscode/
+.idea/
+
+# Windows 缩略图缓存
+Thumbs.db
+
+# 其他
+bash.exe.stackdump
