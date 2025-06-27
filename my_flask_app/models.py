@@ -1,5 +1,5 @@
 #./models.py
-from tkinter import CASCADE
+
 from sqlalchemy import Nullable
 import datetime as dt
 from my_flask_app.extensions import db

@@ -1,1 +1,1 @@
-web: python -m flask --app "my_flask_app:create_app()" db upgrade && python -m gunicorn "my_flask_app:create_app()"
+web: python run.py

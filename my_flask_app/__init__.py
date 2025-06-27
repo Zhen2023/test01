@@ -1,4 +1,4 @@
-# app.py
+# my_flask_app/__init__.py
 
 from flask import Flask, render_template, request, redirect, url_for
 import os
