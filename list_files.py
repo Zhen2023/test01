@@ -43,10 +43,10 @@ def print_directory_tree(root_dir, exclude_dirs=None):
 if __name__ == "__main__":
     # 1. 设置你的目标文件夹路径
     # 使用 r"..." (原始字符串) 来避免 Windows 路径中反斜杠 \ 的转义问题
-    target_path = r"D:\Trae_work\test01\my_flask_app"
+    target_path = r"D:\Trae_work\test01"
 
     # 2. 设置要排除的文件夹名称
-    folders_to_exclude = ["venv", "__pycache__", "migrations"] # 我也帮你把 migrations 加进去了，因为它通常也和核心逻辑无关
+    folders_to_exclude = ["venv", "__pycache__", "migrations",".trae","test",".git"] # 我也帮你把 migrations 加进去了，因为它通常也和核心逻辑无关
 
     # 3. 调用函数
     if os.path.isdir(target_path):
