@@ -1,8 +1,16 @@
-# run.py (最终生产版)
+# run.py (最终部署版)
+import os
+from my_flask_app import create_app, db
+from flask_migrate import upgrade
 
-from my_flask_app import create_app
-
-# 创建应用实例，Gunicorn 会自动找到这个名为 'app' 的变量
 app = create_app()
 
-# 注意：这里不再有数据库迁移逻辑，也不再有 if __name__ == '__main__'
+with app.app_context():
+    try:
+        upgrade()
+        print("--- Database upgrade successful. ---")
+    except Exception as e:
+        print(f"--- Database upgrade failed: {e} ---")
+
+if __name__ == "__main__":
+    app.run(debug=True)
