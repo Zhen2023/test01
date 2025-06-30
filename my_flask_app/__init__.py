@@ -9,8 +9,23 @@ def create_app():#工厂函数
     app = Flask(__name__)
     #配置工厂函数中的工作室
     app.config['SECRET_KEY'] = 'a_very_secret_and_random_string_please_change_me'
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///' + os.path.join(basedir,'site.db')
+
+   # 1. 从环境变量中获取 DATABASE_URL
+    database_url = os.environ.get('DATABASE_URL')
+
+    # 2. 如果是 PostgreSQL (Railway 会提供 postgresql://... 格式的 URL)，
+    #    SQLAlchemy 1.4+ 推荐将 postgres:// 替换为 postgresql://
+    if database_url and database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+    # 3. 如果环境变量存在，就用它；否则 (在本地开发时)，继续用 SQLite
+    if database_url:
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    else:
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'site.db')
+
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['POSTS_PER_PAGE'] = 5
     # --- 在工作室里组装工具 ---
@@ -39,7 +54,7 @@ def create_app():#工厂函数
  
     return app
 
-
+#准备启用PostgreSql数据库
 
 # # 3. 运行应用 在工厂模式下，app.py被改成__init__.py，职责从被执行的主程序变成了仅定义工厂函数的文件，所以下面这段不能在这个文件出现，而是在run.py中出现
 # if __name__ == '__main__':
