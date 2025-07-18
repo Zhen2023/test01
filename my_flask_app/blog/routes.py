@@ -12,13 +12,14 @@ from sqlalchemy import or_
 
 @blog_bp.route('/posts')
 def posts():
-    page = request.args.get('page', 1, type=int)
-    per_page = current_app.config.get('POSTS_PER_PAGE', 10)
-    pagination = Post.query.order_by(Post.create_time.desc()).paginate(
-        page=page,per_page=per_page,error_out=False
-    )
-    posts_on_page = pagination.items
-    return render_template('blog/posts.html',posts=posts_on_page,pagination=pagination,title = '文章列表')
+    return render_template('blog/posts.html', title='文章列表')
+    # page = request.args.get('page', 1, type=int)
+    # per_page = current_app.config.get('POSTS_PER_PAGE', 10)
+    # pagination = Post.query.order_by(Post.create_time.desc()).paginate(
+    #     page=page,per_page=per_page,error_out=False
+    # )
+    # posts_on_page = pagination.items
+    # return render_template('blog/posts.html',posts=posts_on_page,pagination=pagination,title = '文章列表')
 
 
 @blog_bp.route('/new_post',methods=['GET','POST'])
@@ -42,7 +43,7 @@ def new_post():
                     db.session.add(new_tag)
                     tags.append(new_tag)
 
-        post = Post(title=title,content=content,user=current_user,summary=summary,tags=tags)
+        post = Post(title=title,content=content,author=current_user,summary=summary,tags=tags)
    
 
         try:

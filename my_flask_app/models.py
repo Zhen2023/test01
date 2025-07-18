@@ -48,10 +48,24 @@ class Post(db.Model):
     author = db.relationship('User',back_populates='posts')
     comments = db.relationship('Comment',back_populates='post',lazy='dynamic',cascade='all,delete-orphan')
 
-
-    
     def __repr__(self):
         return f"<Post '{self.title}'>"
+
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'title':self.title,
+            'summary':self.summary,
+            'body':self.content,
+            'likes':self.likes,
+            'create_time':self.create_time.strftime("%Y-%m-%d %H:%M:%S"), 
+            'update_time':self.update_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'author':{
+                'id':self.author.id,
+                'username':self.author.username
+            },
+            'tags':[tag.name for tag in self.tags]
+        }
 
 class Tag(db.Model):
     __tablename__ = 'tag'

@@ -46,11 +46,13 @@ def create_app(): # 工厂函数
     # --- 在应用上下文中注册蓝图和加载器 ---
     #    这可以避免在导入时就执行蓝图代码，是一种更安全的做法
     with app.app_context():
-        from . import main, auth, blog # 导入蓝图模块
+        from . import main, auth, blog ,api # 导入蓝图模块
+
 
         app.register_blueprint(main.main_bp)
         app.register_blueprint(auth.auth_bp)
         app.register_blueprint(blog.blog_bp)
+        app.register_blueprint(api.api_bp)
         
         from .models import User
         @login_manager.user_loader
